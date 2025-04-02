@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        FIREBASE_TOKEN = credentials('FIREBASE_TOKEN')
+    }
+
     stages {
         stage('Install Firebase CLI') {
             steps {
@@ -10,20 +14,21 @@ pipeline {
 
         stage('Deploy to Testing') {
             steps {
-                sh 'firebase deploy --project final-exam-testing'
+                sh 'firebase deploy --project final-exam-testing --token $FIREBASE_TOKEN'
             }
         }
 
         stage('Deploy to Staging') {
             steps {
-                sh 'firebase deploy --project final-exam-staging'
+                sh 'firebase deploy --project final-exam-staging --token $FIREBASE_TOKEN'
             }
         }
 
         stage('Deploy to Production') {
             steps {
-                sh 'firebase deploy --project final-exam-production-8e528'
+                sh 'firebase deploy --project final-exam-production-8e528 --token $FIREBASE_TOKEN'
             }
         }
     }
 }
+
